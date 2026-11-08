@@ -37,15 +37,22 @@ for r in repos:
     if TOPIC not in (r.get("topics") or []):
         continue
     shown.append({
-        "name": r["name"].replace("-", " ").replace("_", " "),
+        "name": r["name"],
         "description": r.get("description") or "",
         "language": r.get("language") or "",
         "private": bool(r.get("private")),
         "updated": (r.get("pushed_at") or "")[:10],
     })
 
-with open("data.json", encoding="utf-8") as f:
-    data = json.load(f)
+try:
+    with open("data.json", encoding="utf-8") as f:
+        data = json.load(f)
+except Exception:
+    data = {
+        "profile": {"name": "Sahadat000", "tagline": "Turning Ideas into Powerful Solutions",
+                    "github": "https://github.com/Sahadat000", "socials": {}},
+        "facebook": {"pages": []},
+    }
 
 data.setdefault("github", {})["repos"] = shown
 data["updated"] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
