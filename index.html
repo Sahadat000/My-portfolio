@@ -136,8 +136,8 @@
         <h1>Dream. Develop. <span>Deploy.</span></h1>
         <p class="sub" id="tagline">Turning Ideas into Powerful Solutions</p>
         <div class="btns">
-          <a class="btn p" href="#projects">View My Work →</a>
-          <a class="btn s" href="#contact">✈ Let's Connect</a>
+          <a class="btn p" href="#projects" id="btn-work">View My Work →</a>
+          <a class="btn s" href="#contact" id="btn-connect">✈ Let's Connect</a>
         </div>
       </div>
       <div class="stats" id="stats"></div>
@@ -189,6 +189,12 @@ function dateBn(s) {
   const d = new Date(s);
   return isNaN(d) ? '' : d.toLocaleDateString('bn-BD', { year:'numeric', month:'long', day:'numeric' });
 }
+function hideSec(id) {
+  const s = document.getElementById(id);
+  if (s) s.style.display = 'none';
+  const n = document.querySelector('a.nav[href="#' + id + '"]');
+  if (n) n.style.display = 'none';
+}
 
 /* থিম */
 const root = document.documentElement, tbtn = document.getElementById('toggle');
@@ -205,7 +211,9 @@ const navs = [...document.querySelectorAll('a.nav')];
 const secs = navs.map(a => document.querySelector(a.getAttribute('href')));
 window.addEventListener('scroll', () => {
   let cur = 0;
-  secs.forEach((s, i) => { if (s && s.getBoundingClientRect().top < 140) cur = i; });
+  secs.forEach((s, i) => {
+    if (s && s.style.display !== 'none' && s.getBoundingClientRect().top < 140) cur = i;
+  });
   navs.forEach((a, i) => a.classList.toggle('active', i === cur));
 });
 
@@ -237,12 +245,15 @@ function render(d) {
     a.append(img); ibox.append(a);
   });
 
-  /* সংখ্যা */
+  /* সংখ্যা (শুধু যেগুলো ০-র বেশি) */
   const totalFollowers = pages.reduce((s, x) => s + (Number(x.followers) || 0), 0);
   const stats = document.getElementById('stats');
-  [[repos.length, 'প্রজেক্ট'], [pages.length, 'সোশ্যাল পেজ'], [totalFollowers, 'মোট ফলোয়ার']].forEach(([n, l]) => {
-    const s = el('div', 'stat'); s.append(el('b', '', bn(n)), el('span', '', l)); stats.append(s);
-  });
+  [[repos.length, 'প্রজেক্ট'], [pages.length, 'সোশ্যাল পেজ'], [totalFollowers, 'মোট ফলোয়ার']]
+    .filter(x => x[0] > 0)
+    .forEach(([n, l]) => {
+      const s = el('div', 'stat'); s.append(el('b', '', bn(n)), el('span', '', l)); stats.append(s);
+    });
+  if (!stats.children.length) stats.style.display = 'none';
 
   /* প্রজেক্ট */
   const rbox = document.getElementById('repos');
@@ -262,10 +273,16 @@ function render(d) {
   const langs = [...new Set(repos.map(r => r.language).filter(Boolean))];
   const latest = repos.map(r => r.updated).filter(Boolean).sort().pop();
   const c1 = el('div', 'card'); c1.append(el('h3', '', 'মোট রিপোজিটরি'), el('div', 'big', bn(repos.length)));
-  const c2 = el('div', 'card'); c2.append(el('h3', '', 'ব্যবহৃত ভাষা'));
-  const lm = el('div', 'meta'); langs.forEach(l => lm.append(el('span', 'tag', l))); c2.append(lm);
-  const c3 = el('div', 'card'); c3.append(el('h3', '', 'সর্বশেষ কাজ'), el('p', '', latest ? dateBn(latest) : '—'));
-  gh.append(c1, c2, c3);
+  gh.append(c1);
+  if (langs.length) {
+    const c2 = el('div', 'card'); c2.append(el('h3', '', 'ব্যবহৃত ভাষা'));
+    const lm = el('div', 'meta'); langs.forEach(l => lm.append(el('span', 'tag', l))); c2.append(lm);
+    gh.append(c2);
+  }
+  if (latest) {
+    const c3 = el('div', 'card'); c3.append(el('h3', '', 'সর্বশেষ কাজ'), el('p', '', dateBn(latest)));
+    gh.append(c3);
+  }
 
   /* সোশ্যাল পেজ */
   const pbox = document.getElementById('pages');
@@ -292,6 +309,19 @@ function render(d) {
   if (socials.github) add('🐙 GitHub', safeUrl(socials.github), true);
 
   if (d.updated) document.getElementById('updated').textContent = 'সর্বশেষ আপডেট: ' + dateBn(d.updated);
+
+  /* যেগুলোতে কিছু নেই, সেগুলো লুকানো */
+  if (!repos.length) {
+    hideSec('projects'); hideSec('github');
+    document.getElementById('search').style.display = 'none';
+    document.getElementById('btn-work').style.display = 'none';
+  }
+  if (!p.about) hideSec('about');
+  if (!pages.length) hideSec('social');
+  if (!cbox.children.length) {
+    hideSec('contact');
+    document.getElementById('btn-connect').style.display = 'none';
+  }
 
   /* সার্চ */
   document.getElementById('search').addEventListener('input', e => {
