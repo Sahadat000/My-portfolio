@@ -2,11 +2,19 @@ name: Update portfolio data
 
 on:
   schedule:
-    - cron: "0 */6 * * *"
+    - cron: "0 * * * *"
+  push:
+    branches: [main]
+    paths-ignore:
+      - data.json
   workflow_dispatch:
 
 permissions:
   contents: write
+
+concurrency:
+  group: portfolio-update
+  cancel-in-progress: false
 
 jobs:
   update:
