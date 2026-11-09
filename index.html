@@ -3,7 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>পোর্টফোলিও</title>
+<title>SahadatLabs | শাহাদাত ল্যাবস – Software and AI Agents</title>
+<meta name="description" content="SahadatLabs (শাহাদাত ল্যাবস) – software and AI agents built by Sahadat. See projects, tools and contact details.">
+<link rel="canonical" href="https://sahadat000.github.io/My-portfolio/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="SahadatLabs | শাহাদাত ল্যাবস">
+<meta property="og:description" content="Software and AI agents. Dream. Develop. Deploy.">
+<meta property="og:url" content="https://sahadat000.github.io/My-portfolio/">
+<meta property="og:image" content="https://sahadat000.github.io/My-portfolio/profile.jpg">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "SahadatLabs",
+  "alternateName": ["শাহাদাত ল্যাবস", "Sahadat Labs"],
+  "url": "https://sahadat000.github.io/My-portfolio/"
+}
+</script>
 <style>
   :root {
     --bg:#050814; --panel:rgba(27,26,91,.35); --card:rgba(27,26,91,.45);
@@ -152,9 +168,9 @@
 
     <section id="home">
       <div class="hero">
-        <div class="planet"><img id="photo" alt="প্রোফাইল ছবি"></div>
+        <div class="planet"><img id="photo" alt="SahadatLabs প্রোফাইল ছবি"></div>
         <div class="mount"></div>
-        <span class="hello" id="hello">👋 Hello, I'm Developer</span>
+        <span class="hello" id="hello">👋 Welcome to SahadatLabs · শাহাদাত ল্যাবস</span>
         <h1>Dream. Develop. <span>Deploy.</span></h1>
         <p class="sub" id="tagline">Turning Ideas into Powerful Solutions</p>
         <div class="btns">
@@ -193,7 +209,10 @@
       <div class="links" id="contact-links"></div>
     </section>
 
-    <footer id="updated"></footer>
+    <footer>
+      <p>© SahadatLabs · শাহাদাত ল্যাবস</p>
+      <p id="updated"></p>
+    </footer>
   </main>
 </div>
 
@@ -255,8 +274,6 @@ function render(d) {
   const repos = (d.github && d.github.repos) || [];
   const pages = (d.facebook && d.facebook.pages) || [];
 
-  document.title = (p.name || 'পোর্টফোলিও') + ' | পোর্টফোলিও';
-  document.getElementById('hello').textContent = "👋 Hello, I'm " + (p.name || 'Developer');
   if (p.tagline) document.getElementById('tagline').textContent = p.tagline;
   document.getElementById('about-text').textContent = p.about || '';
   if (p.photo) { photo.style.display = ''; photo.src = p.photo; }
