@@ -278,8 +278,18 @@ function render(d) {
 
   /* যোগাযোগ */
   const cbox = document.getElementById('contact-links');
-  if (p.email) { const a = el('a', '', 'ইমেইল'); a.href = 'mailto:' + p.email; cbox.append(a); }
-  if (p.github) { const a = el('a', '', 'GitHub'); a.href = safeUrl(p.github); a.target = '_blank'; a.rel = 'noopener'; cbox.append(a); }
+  const add = (label, href, ext) => {
+    const a = el('a', '', label); a.href = href;
+    if (ext) { a.target = '_blank'; a.rel = 'noopener'; }
+    cbox.append(a);
+  };
+  if (p.email) add('✉️ ইমেইল', 'mailto:' + p.email, false);
+  if (p.whatsapp) add('🟢 WhatsApp', 'https://wa.me/' + String(p.whatsapp).replace(/\D/g, ''), true);
+  if (socials.telegram) add('✈️ Telegram', safeUrl(socials.telegram), true);
+  if (socials.facebook) add('📘 Facebook', safeUrl(socials.facebook), true);
+  if (socials.discord) add('💬 Discord', safeUrl(socials.discord), true);
+  if (socials.youtube) add('▶️ YouTube', safeUrl(socials.youtube), true);
+  if (socials.github) add('🐙 GitHub', safeUrl(socials.github), true);
 
   if (d.updated) document.getElementById('updated').textContent = 'সর্বশেষ আপডেট: ' + dateBn(d.updated);
 
