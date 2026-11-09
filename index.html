@@ -52,22 +52,39 @@
             radial-gradient(1px 1px at 88% 30%, #fff, transparent),
             radial-gradient(1px 1px at 42% 40%, #cfd8ff, transparent),
             radial-gradient(circle at 75% 40%, rgba(124,58,237,.35), transparent 55%); color:#E0E7FF; }
-  .planet { position:absolute; right:-40px; top:30px; width:340px; height:340px; border-radius:50%;
+  .hero > * { position:relative; z-index:2; }
+
+  .hero > .planet { position:absolute; z-index:1; right:48px; top:50%; margin-top:-130px;
+            width:260px; height:260px; border-radius:50%; overflow:hidden;
             background:radial-gradient(circle at 30% 28%, #7fc4ff 0%, #2a4fb5 35%, #0c1650 65%, #050814 100%);
-            box-shadow:0 0 90px rgba(124,58,237,.65), inset -35px -30px 70px rgba(0,0,0,.65); }
-  .ring { position:absolute; right:-90px; top:150px; width:520px; height:120px; border-radius:50%;
-          border:3px solid rgba(168,85,247,.85); transform:rotate(-18deg); box-shadow:0 0 24px rgba(124,58,237,.8);
-          clip-path:inset(50% 0 0 0); }
-  .mount { position:absolute; left:0; right:0; bottom:0; height:130px;
+            border:3px solid rgba(124,58,237,.9);
+            box-shadow:0 0 30px rgba(124,58,237,.55), 0 0 80px rgba(124,58,237,.35);
+            animation:glow 4s ease-in-out infinite, float 6s ease-in-out infinite; }
+  .planet img { width:100%; height:100%; object-fit:cover; display:block; }
+
+  .hero > .mount { position:absolute; z-index:1; left:0; right:0; bottom:0; height:130px;
            background:linear-gradient(180deg,#2a1f7a,#050814);
            clip-path:polygon(0 100%,0 70%,12% 55%,22% 75%,38% 40%,48% 65%,60% 30%,72% 62%,84% 45%,100% 70%,100% 100%); opacity:.9; }
-  .hero > * { position:relative; z-index:2; }
-  .planet, .ring, .mount { z-index:1 !important; }
+
+  @keyframes glow {
+    0%,100% { border-color:rgba(124,58,237,.95);
+              box-shadow:0 0 30px rgba(124,58,237,.6), 0 0 80px rgba(124,58,237,.35); }
+    50%     { border-color:rgba(0,212,255,.95);
+              box-shadow:0 0 45px rgba(0,212,255,.65), 0 0 110px rgba(0,212,255,.35); }
+  }
+  @keyframes float {
+    0%,100% { transform:translateY(0); }
+    50%     { transform:translateY(-8px); }
+  }
+  @media (prefers-reduced-motion:reduce) {
+    .hero > .planet { animation:none; }
+  }
+
   .hello { display:inline-block; background:rgba(27,26,91,.6); border:1px solid var(--line);
            border-radius:12px; padding:6px 14px; font-size:.9rem; }
-  .hero h1 { font-size:clamp(2rem,6vw,3.4rem); margin:18px 0 8px; line-height:1.15; }
+  .hero h1 { font-size:clamp(2rem,6vw,3.4rem); margin:18px 0 8px; line-height:1.15; max-width:52%; }
   .hero h1 span { color:var(--purple); }
-  .hero p.sub { font-size:1.15rem; color:#c7d0f5; max-width:520px; }
+  .hero p.sub { font-size:1.15rem; color:#c7d0f5; max-width:min(520px,52%); }
   .btns { margin-top:28px; display:flex; gap:14px; flex-wrap:wrap; }
   .btn { padding:13px 24px; border-radius:12px; text-decoration:none; font-weight:600; font-size:.95rem; }
   .btn.p { background:linear-gradient(90deg,var(--purple),#4f2fd6); color:#fff; box-shadow:0 0 24px rgba(124,58,237,.5); }
@@ -103,8 +120,12 @@
     .toggle { margin:0 0 0 auto; }
     main { border-left:1px solid var(--line); border-top:none; border-radius:0 0 20px 20px; padding:16px; }
     .hero { padding:32px 20px; }
-    .planet { width:220px; height:220px; right:-70px; top:10px; opacity:.55; }
-    .ring { display:none; }
+  }
+
+  @media (max-width:1000px) {
+    .hero > .planet { position:relative; right:auto; top:auto; margin:0 auto 22px; width:170px; height:170px; }
+    .hero h1 { max-width:none; }
+    .hero p.sub { max-width:520px; }
   }
 </style>
 </head>
@@ -131,7 +152,8 @@
 
     <section id="home">
       <div class="hero">
-        <div class="planet"></div><div class="ring"></div><div class="mount"></div>
+        <div class="planet"><img id="photo" alt="প্রোফাইল ছবি"></div>
+        <div class="mount"></div>
         <span class="hello" id="hello">👋 Hello, I'm Developer</span>
         <h1>Dream. Develop. <span>Deploy.</span></h1>
         <p class="sub" id="tagline">Turning Ideas into Powerful Solutions</p>
@@ -196,6 +218,11 @@ function hideSec(id) {
   if (n) n.style.display = 'none';
 }
 
+/* প্রোফাইল ছবি */
+const photo = document.getElementById('photo');
+photo.addEventListener('error', () => { photo.style.display = 'none'; });
+photo.src = 'profile.jpg';
+
 /* থিম */
 const root = document.documentElement, tbtn = document.getElementById('toggle');
 function setTheme(t) { root.setAttribute('data-theme', t); tbtn.textContent = t === 'dark' ? '🌙' : '☀️'; }
@@ -232,6 +259,7 @@ function render(d) {
   document.getElementById('hello').textContent = "👋 Hello, I'm " + (p.name || 'Developer');
   if (p.tagline) document.getElementById('tagline').textContent = p.tagline;
   document.getElementById('about-text').textContent = p.about || '';
+  if (p.photo) { photo.style.display = ''; photo.src = p.photo; }
 
   /* ওপরের আইকন */
   const socials = Object.assign({}, p.socials || {});
