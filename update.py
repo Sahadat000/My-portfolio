@@ -36,12 +36,14 @@ for r in repos:
         continue
     if TOPIC not in (r.get("topics") or []):
         continue
+    is_private = bool(r.get("private"))
     shown.append({
         "name": r["name"],
         "description": r.get("description") or "",
-        "language": r.get("language") or "",
-        "private": bool(r.get("private")),
-        "updated": (r.get("pushed_at") or "")[:10],
+        # Private repos expose only name + description (no code details)
+        "language": "" if is_private else (r.get("language") or ""),
+        "private": is_private,
+        "updated": "" if is_private else (r.get("pushed_at") or "")[:10],
     })
 
 try:
