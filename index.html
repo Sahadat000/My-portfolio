@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="bn" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>পোর্টফোলিও</title>
+<style>
+  :root {
+    --bg:#050814; --panel:rgba(27,26,91,.35); --card:rgba(27,26,91,.45);
+    --text:#E0E7FF; --muted:#9aa5d1; --purple:#7C3AED; --blue:#00D4FF;
+    --navy:#1B1A5B; --line:rgba(124,58,237,.35);
+  }
+  [data-theme="light"] {
+    --bg:#eef1ff; --panel:rgba(255,255,255,.7); --card:#ffffff;
+    --text:#0b1030; --muted:#4b557f; --line:rgba(124,58,237,.3);
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html { scroll-behavior:smooth; }
+  body { background:var(--bg); color:var(--text); font-family:system-ui,sans-serif; line-height:1.6;
+         background-image:radial-gradient(circle at 80% 0%, rgba(124,58,237,.25), transparent 45%); }
+  .layout { display:grid; grid-template-columns:200px 1fr; gap:0; max-width:1200px; margin:0 auto; padding:16px; }
+
+  aside { position:sticky; top:16px; height:calc(100vh - 32px); background:var(--panel);
+          border:1px solid var(--line); border-radius:20px 0 0 20px; padding:20px 14px;
+          display:flex; flex-direction:column; gap:6px; }
+  .logo { font-size:1.6rem; color:var(--purple); font-weight:800; margin:4px 10px 18px; letter-spacing:1px; }
+  aside a.nav { color:var(--muted); text-decoration:none; padding:10px 14px; border-radius:12px; font-size:.95rem; }
+  aside a.nav:hover, aside a.nav.active { background:linear-gradient(90deg,var(--purple),#4f2fd6); color:#fff; }
+  .toggle { margin-top:auto; align-self:center; background:var(--card); border:1px solid var(--line);
+            color:var(--text); border-radius:20px; padding:6px 14px; cursor:pointer; font-size:1rem; }
+
+  main { background:var(--panel); border:1px solid var(--line); border-left:none;
+         border-radius:0 20px 20px 0; padding:20px 28px 40px; min-width:0; }
+  .topbar { display:flex; gap:14px; align-items:center; flex-wrap:wrap; }
+  .search { flex:1; min-width:180px; background:var(--card); border:1px solid var(--line);
+            color:var(--text); border-radius:14px; padding:11px 16px; font-size:.95rem; outline:none; }
+  .search:focus { border-color:var(--blue); }
+  .online { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:8px 16px; font-size:.9rem; }
+  .online i { display:inline-block; width:9px; height:9px; background:#22c55e; border-radius:50%; margin-right:8px; }
+  .icons { display:flex; gap:8px; }
+  .icons a { width:38px; height:38px; border-radius:50%; background:var(--navy); border:1px solid var(--line);
+             display:flex; align-items:center; justify-content:center; }
+  .icons img { width:18px; height:18px; }
+
+  .hero { position:relative; margin-top:20px; min-height:420px; border-radius:20px; overflow:hidden;
+          border:1px solid var(--line); padding:48px 36px; background:#050814;
+          background-image:
+            radial-gradient(1.5px 1.5px at 12% 20%, #fff, transparent),
+            radial-gradient(1px 1px at 30% 70%, #cfd8ff, transparent),
+            radial-gradient(1.5px 1.5px at 55% 15%, #fff, transparent),
+            radial-gradient(1px 1px at 70% 55%, #cfd8ff, transparent),
+            radial-gradient(1px 1px at 88% 30%, #fff, transparent),
+            radial-gradient(1px 1px at 42% 40%, #cfd8ff, transparent),
+            radial-gradient(circle at 75% 40%, rgba(124,58,237,.35), transparent 55%); color:#E0E7FF; }
+  .planet { position:absolute; right:-40px; top:30px; width:340px; height:340px; border-radius:50%;
+            background:radial-gradient(circle at 30% 28%, #7fc4ff 0%, #2a4fb5 35%, #0c1650 65%, #050814 100%);
+            box-shadow:0 0 90px rgba(124,58,237,.65), inset -35px -30px 70px rgba(0,0,0,.65); }
+  .ring { position:absolute; right:-90px; top:150px; width:520px; height:120px; border-radius:50%;
+          border:3px solid rgba(168,85,247,.85); transform:rotate(-18deg); box-shadow:0 0 24px rgba(124,58,237,.8);
+          clip-path:inset(50% 0 0 0); }
+  .mount { position:absolute; left:0; right:0; bottom:0; height:130px;
+           background:linear-gradient(180deg,#2a1f7a,#050814);
+           clip-path:polygon(0 100%,0 70%,12% 55%,22% 75%,38% 40%,48% 65%,60% 30%,72% 62%,84% 45%,100% 70%,100% 100%); opacity:.9; }
+  .hero > * { position:relative; z-index:2; }
+  .planet, .ring, .mount { z-index:1 !important; }
+  .hello { display:inline-block; background:rgba(27,26,91,.6); border:1px solid var(--line);
+           border-radius:12px; padding:6px 14px; font-size:.9rem; }
+  .hero h1 { font-size:clamp(2rem,6vw,3.4rem); margin:18px 0 8px; line-height:1.15; }
+  .hero h1 span { color:var(--purple); }
+  .hero p.sub { font-size:1.15rem; color:#c7d0f5; max-width:520px; }
+  .btns { margin-top:28px; display:flex; gap:14px; flex-wrap:wrap; }
+  .btn { padding:13px 24px; border-radius:12px; text-decoration:none; font-weight:600; font-size:.95rem; }
+  .btn.p { background:linear-gradient(90deg,var(--purple),#4f2fd6); color:#fff; box-shadow:0 0 24px rgba(124,58,237,.5); }
+  .btn.s { border:1px solid var(--purple); color:#E0E7FF; }
+
+  .stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin-top:20px; }
+  .stat { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px; text-align:center; }
+  .stat b { display:block; font-size:1.8rem; color:var(--blue); }
+  .stat span { color:var(--muted); font-size:.85rem; }
+
+  section { scroll-margin-top:16px; }
+  h2 { margin:44px 0 16px; font-size:1.3rem; color:var(--blue); }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px; }
+  .card h3 { margin-bottom:6px; font-size:1.05rem; }
+  .card p { color:var(--muted); font-size:.92rem; }
+  .meta { margin-top:12px; display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
+  .tag { background:rgba(0,212,255,.12); color:var(--blue); padding:2px 10px; border-radius:20px; font-size:.78rem; }
+  .small { color:var(--muted); font-size:.78rem; }
+  .big { font-size:1.7rem; color:var(--purple); font-weight:700; }
+  a.cl { color:inherit; text-decoration:none; }
+  .links a { display:inline-block; margin:6px 8px 0 0; padding:12px 22px; background:linear-gradient(90deg,var(--purple),#4f2fd6);
+             color:#fff; border-radius:12px; text-decoration:none; font-weight:600; }
+  footer { margin-top:48px; color:var(--muted); font-size:.82rem; text-align:center; }
+  #error { display:none; background:#3a1d1d; color:#fff; padding:16px; border-radius:12px; margin-top:20px; }
+  .empty { color:var(--muted); font-size:.9rem; }
+
+  @media (max-width:820px) {
+    .layout { grid-template-columns:1fr; padding:8px; }
+    aside { position:static; height:auto; flex-direction:row; overflow-x:auto; border-radius:20px 20px 0 0; padding:10px; }
+    .logo { display:none; }
+    aside a.nav { white-space:nowrap; padding:8px 12px; }
+    .toggle { margin:0 0 0 auto; }
+    main { border-left:1px solid var(--line); border-top:none; border-radius:0 0 20px 20px; padding:16px; }
+    .hero { padding:32px 20px; }
+    .planet { width:220px; height:220px; right:-70px; top:10px; opacity:.55; }
+    .ring { display:none; }
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <aside>
+    <div class="logo">&lt;/&gt;</div>
+    <a class="nav active" href="#home">🏠 Home</a>
+    <a class="nav" href="#projects">📦 Projects</a>
+    <a class="nav" href="#about">👤 About</a>
+    <a class="nav" href="#github">🐙 GitHub</a>
+    <a class="nav" href="#social">💬 Social</a>
+    <a class="nav" href="#contact">✉️ Contact</a>
+    <button class="toggle" id="toggle" title="থিম বদলান">🌙</button>
+  </aside>
+
+  <main>
+    <div class="topbar">
+      <input class="search" id="search" placeholder="প্রজেক্ট খুঁজুন...">
+      <div class="online"><i></i>Online</div>
+      <div class="icons" id="icons"></div>
+    </div>
+
+    <section id="home">
+      <div class="hero">
+        <div class="planet"></div><div class="ring"></div><div class="mount"></div>
+        <span class="hello" id="hello">👋 Hello, I'm Developer</span>
+        <h1>Dream. Develop. <span>Deploy.</span></h1>
+        <p class="sub" id="tagline">Turning Ideas into Powerful Solutions</p>
+        <div class="btns">
+          <a class="btn p" href="#projects">View My Work →</a>
+          <a class="btn s" href="#contact">✈ Let's Connect</a>
+        </div>
+      </div>
+      <div class="stats" id="stats"></div>
+    </section>
+
+    <div id="error">তথ্য লোড করা যায়নি। কিছুক্ষণ পরে আবার চেষ্টা করুন।</div>
+
+    <section id="projects">
+      <h2>আমার প্রজেক্ট ও এজেন্ট</h2>
+      <div class="grid" id="repos"></div>
+      <p class="empty" id="noresult" style="display:none">কোনো প্রজেক্ট মেলেনি।</p>
+    </section>
+
+    <section id="about">
+      <h2>আমার সম্পর্কে</h2>
+      <div class="card"><p id="about-text"></p></div>
+    </section>
+
+    <section id="github">
+      <h2>GitHub</h2>
+      <div class="grid" id="gh"></div>
+    </section>
+
+    <section id="social">
+      <h2>সোশ্যাল মিডিয়া পেজ</h2>
+      <div class="grid" id="pages"></div>
+    </section>
+
+    <section id="contact">
+      <h2>যোগাযোগ</h2>
+      <div class="links" id="contact-links"></div>
+    </section>
+
+    <footer id="updated"></footer>
+  </main>
+</div>
+
+<script>
+function el(tag, cls, text) {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (text !== undefined && text !== null) e.textContent = text;
+  return e;
+}
+function safeUrl(u) { return /^https?:\/\//.test(u || '') ? u : '#'; }
+function bn(n) { return Number(n || 0).toLocaleString('bn-BD'); }
+function dateBn(s) {
+  if (!s) return '';
+  const d = new Date(s);
+  return isNaN(d) ? '' : d.toLocaleDateString('bn-BD', { year:'numeric', month:'long', day:'numeric' });
+}
+
+/* থিম */
+const root = document.documentElement, tbtn = document.getElementById('toggle');
+function setTheme(t) { root.setAttribute('data-theme', t); tbtn.textContent = t === 'dark' ? '🌙' : '☀️'; }
+try { setTheme(localStorage.getItem('theme') || 'dark'); } catch (e) { setTheme('dark'); }
+tbtn.onclick = () => {
+  const t = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  setTheme(t);
+  try { localStorage.setItem('theme', t); } catch (e) {}
+};
+
+/* মেনু হাইলাইট */
+const navs = [...document.querySelectorAll('a.nav')];
+const secs = navs.map(a => document.querySelector(a.getAttribute('href')));
+window.addEventListener('scroll', () => {
+  let cur = 0;
+  secs.forEach((s, i) => { if (s && s.getBoundingClientRect().top < 140) cur = i; });
+  navs.forEach((a, i) => a.classList.toggle('active', i === cur));
+});
+
+/* ডেটা */
+fetch('data.json?v=' + Date.now())
+  .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+  .then(render)
+  .catch(() => { document.getElementById('error').style.display = 'block'; });
+
+function render(d) {
+  const p = d.profile || {};
+  const repos = (d.github && d.github.repos) || [];
+  const pages = (d.facebook && d.facebook.pages) || [];
+
+  document.title = (p.name || 'পোর্টফোলিও') + ' | পোর্টফোলিও';
+  document.getElementById('hello').textContent = "👋 Hello, I'm " + (p.name || 'Developer');
+  if (p.tagline) document.getElementById('tagline').textContent = p.tagline;
+  document.getElementById('about-text').textContent = p.about || '';
+
+  /* ওপরের আইকন */
+  const socials = Object.assign({}, p.socials || {});
+  if (!socials.github && p.github) socials.github = p.github;
+  if (!socials.facebook && pages[0] && pages[0].url) socials.facebook = pages[0].url;
+  const ibox = document.getElementById('icons');
+  ['github', 'facebook', 'telegram', 'discord', 'youtube'].forEach(k => {
+    if (!socials[k]) return;
+    const a = el('a'); a.href = safeUrl(socials[k]); a.target = '_blank'; a.rel = 'noopener'; a.title = k;
+    const img = el('img'); img.src = 'https://cdn.simpleicons.org/' + k + '/ffffff'; img.alt = k;
+    a.append(img); ibox.append(a);
+  });
+
+  /* সংখ্যা */
+  const totalFollowers = pages.reduce((s, x) => s + (Number(x.followers) || 0), 0);
+  const stats = document.getElementById('stats');
+  [[repos.length, 'প্রজেক্ট'], [pages.length, 'সোশ্যাল পেজ'], [totalFollowers, 'মোট ফলোয়ার']].forEach(([n, l]) => {
+    const s = el('div', 'stat'); s.append(el('b', '', bn(n)), el('span', '', l)); stats.append(s);
+  });
+
+  /* প্রজেক্ট */
+  const rbox = document.getElementById('repos');
+  repos.forEach(r => {
+    const c = el('div', 'card');
+    c.dataset.text = ((r.name || '') + ' ' + (r.description || '') + ' ' + (r.language || '')).toLowerCase();
+    c.append(el('h3', '', r.name), el('p', '', r.description || 'বিবরণ শীঘ্রই যোগ হবে।'));
+    const m = el('div', 'meta');
+    if (r.language) m.append(el('span', 'tag', r.language));
+    if (r.private) m.append(el('span', 'small', '🔒 কোড প্রাইভেট'));
+    if (r.updated) m.append(el('span', 'small', 'শেষ আপডেট: ' + dateBn(r.updated)));
+    c.append(m); rbox.append(c);
+  });
+
+  /* GitHub অংশ */
+  const gh = document.getElementById('gh');
+  const langs = [...new Set(repos.map(r => r.language).filter(Boolean))];
+  const latest = repos.map(r => r.updated).filter(Boolean).sort().pop();
+  const c1 = el('div', 'card'); c1.append(el('h3', '', 'মোট রিপোজিটরি'), el('div', 'big', bn(repos.length)));
+  const c2 = el('div', 'card'); c2.append(el('h3', '', 'ব্যবহৃত ভাষা'));
+  const lm = el('div', 'meta'); langs.forEach(l => lm.append(el('span', 'tag', l))); c2.append(lm);
+  const c3 = el('div', 'card'); c3.append(el('h3', '', 'সর্বশেষ কাজ'), el('p', '', latest ? dateBn(latest) : '—'));
+  gh.append(c1, c2, c3);
+
+  /* সোশ্যাল পেজ */
+  const pbox = document.getElementById('pages');
+  pages.forEach(pg => {
+    const a = el('a', 'cl'); a.href = safeUrl(pg.url); a.target = '_blank'; a.rel = 'noopener';
+    const c = el('div', 'card');
+    c.append(el('h3', '', pg.name), el('div', 'big', bn(pg.followers)), el('p', '', 'ফলোয়ার'));
+    a.append(c); pbox.append(a);
+  });
+
+  /* যোগাযোগ */
+  const cbox = document.getElementById('contact-links');
+  if (p.email) { const a = el('a', '', 'ইমেইল'); a.href = 'mailto:' + p.email; cbox.append(a); }
+  if (p.github) { const a = el('a', '', 'GitHub'); a.href = safeUrl(p.github); a.target = '_blank'; a.rel = 'noopener'; cbox.append(a); }
+
+  if (d.updated) document.getElementById('updated').textContent = 'সর্বশেষ আপডেট: ' + dateBn(d.updated);
+
+  /* সার্চ */
+  document.getElementById('search').addEventListener('input', e => {
+    const q = e.target.value.trim().toLowerCase();
+    let shown = 0;
+    [...rbox.children].forEach(c => {
+      const ok = !q || c.dataset.text.includes(q);
+      c.style.display = ok ? '' : 'none';
+      if (ok) shown++;
+    });
+    document.getElementById('noresult').style.display = shown ? 'none' : 'block';
+    if (q) document.getElementById('projects').scrollIntoView();
+  });
+}
+</script>
+</body>
+</html>
