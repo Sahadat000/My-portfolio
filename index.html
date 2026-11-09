@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="bn" data-theme="dark">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -156,19 +156,19 @@
     <a class="nav" href="#github">🐙 GitHub</a>
     <a class="nav" href="#social">💬 Social</a>
     <a class="nav" href="#contact">✉️ Contact</a>
-    <button class="toggle" id="toggle" title="থিম বদলান">🌙</button>
+    <button class="toggle" id="toggle" title="Change theme">🌙</button>
   </aside>
 
   <main>
     <div class="topbar">
-      <input class="search" id="search" placeholder="প্রজেক্ট খুঁজুন...">
+      <input class="search" id="search" placeholder="Search projects...">
       <div class="online"><i></i>Online</div>
       <div class="icons" id="icons"></div>
     </div>
 
     <section id="home">
       <div class="hero">
-        <div class="planet"><img id="photo" alt="SahadatLabs প্রোফাইল ছবি"></div>
+        <div class="planet"><img id="photo" alt="SahadatLabs profile photo"></div>
         <div class="mount"></div>
         <span class="hello" id="hello">👋 Welcome to SahadatLabs · শাহাদাত ল্যাবস</span>
         <h1>Dream. Develop. <span>Deploy.</span></h1>
@@ -181,16 +181,16 @@
       <div class="stats" id="stats"></div>
     </section>
 
-    <div id="error">তথ্য লোড করা যায়নি। কিছুক্ষণ পরে আবার চেষ্টা করুন।</div>
+    <div id="error">Couldn't load the data. Please try again in a moment.</div>
 
     <section id="projects">
-      <h2>আমার প্রজেক্ট ও এজেন্ট</h2>
+      <h2>My Projects &amp; Agents</h2>
       <div class="grid" id="repos"></div>
-      <p class="empty" id="noresult" style="display:none">কোনো প্রজেক্ট মেলেনি।</p>
+      <p class="empty" id="noresult" style="display:none">No projects found.</p>
     </section>
 
     <section id="about">
-      <h2>আমার সম্পর্কে</h2>
+      <h2>About Me</h2>
       <div class="card"><p id="about-text"></p></div>
     </section>
 
@@ -200,12 +200,12 @@
     </section>
 
     <section id="social">
-      <h2>সোশ্যাল মিডিয়া পেজ</h2>
+      <h2>Social Media Pages</h2>
       <div class="grid" id="pages"></div>
     </section>
 
     <section id="contact">
-      <h2>যোগাযোগ</h2>
+      <h2>Contact</h2>
       <div class="links" id="contact-links"></div>
     </section>
 
@@ -224,11 +224,11 @@ function el(tag, cls, text) {
   return e;
 }
 function safeUrl(u) { return /^https?:\/\//.test(u || '') ? u : '#'; }
-function bn(n) { return Number(n || 0).toLocaleString('bn-BD'); }
-function dateBn(s) {
+function num(n) { return Number(n || 0).toLocaleString('en-US'); }
+function fmtDate(s) {
   if (!s) return '';
   const d = new Date(s);
-  return isNaN(d) ? '' : d.toLocaleDateString('bn-BD', { year:'numeric', month:'long', day:'numeric' });
+  return isNaN(d) ? '' : d.toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
 }
 function hideSec(id) {
   const s = document.getElementById(id);
@@ -237,12 +237,12 @@ function hideSec(id) {
   if (n) n.style.display = 'none';
 }
 
-/* প্রোফাইল ছবি */
+/* Profile photo */
 const photo = document.getElementById('photo');
 photo.addEventListener('error', () => { photo.style.display = 'none'; });
 photo.src = 'profile.jpg';
 
-/* থিম */
+/* Theme */
 const root = document.documentElement, tbtn = document.getElementById('toggle');
 function setTheme(t) { root.setAttribute('data-theme', t); tbtn.textContent = t === 'dark' ? '🌙' : '☀️'; }
 try { setTheme(localStorage.getItem('theme') || 'dark'); } catch (e) { setTheme('dark'); }
@@ -252,7 +252,7 @@ tbtn.onclick = () => {
   try { localStorage.setItem('theme', t); } catch (e) {}
 };
 
-/* মেনু হাইলাইট */
+/* Menu highlight */
 const navs = [...document.querySelectorAll('a.nav')];
 const secs = navs.map(a => document.querySelector(a.getAttribute('href')));
 window.addEventListener('scroll', () => {
@@ -263,7 +263,7 @@ window.addEventListener('scroll', () => {
   navs.forEach((a, i) => a.classList.toggle('active', i === cur));
 });
 
-/* ডেটা */
+/* Data */
 fetch('data.json?v=' + Date.now())
   .then(r => { if (!r.ok) throw new Error(); return r.json(); })
   .then(render)
@@ -278,7 +278,7 @@ function render(d) {
   document.getElementById('about-text').textContent = p.about || '';
   if (p.photo) { photo.style.display = ''; photo.src = p.photo; }
 
-  /* ওপরের আইকন */
+  /* Top icons */
   const socials = Object.assign({}, p.socials || {});
   if (!socials.github && p.github) socials.github = p.github;
   if (!socials.facebook && pages[0] && pages[0].url) socials.facebook = pages[0].url;
@@ -290,62 +290,62 @@ function render(d) {
     a.append(img); ibox.append(a);
   });
 
-  /* সংখ্যা (শুধু যেগুলো ০-র বেশি) */
+  /* Stats (only values above 0) */
   const totalFollowers = pages.reduce((s, x) => s + (Number(x.followers) || 0), 0);
   const stats = document.getElementById('stats');
-  [[repos.length, 'প্রজেক্ট'], [pages.length, 'সোশ্যাল পেজ'], [totalFollowers, 'মোট ফলোয়ার']]
+  [[repos.length, 'Projects'], [pages.length, 'Social Pages'], [totalFollowers, 'Total Followers']]
     .filter(x => x[0] > 0)
     .forEach(([n, l]) => {
-      const s = el('div', 'stat'); s.append(el('b', '', bn(n)), el('span', '', l)); stats.append(s);
+      const s = el('div', 'stat'); s.append(el('b', '', num(n)), el('span', '', l)); stats.append(s);
     });
   if (!stats.children.length) stats.style.display = 'none';
 
-  /* প্রজেক্ট */
+  /* Projects */
   const rbox = document.getElementById('repos');
   repos.forEach(r => {
     const c = el('div', 'card');
     c.dataset.text = ((r.name || '') + ' ' + (r.description || '') + ' ' + (r.language || '')).toLowerCase();
-    c.append(el('h3', '', r.name), el('p', '', r.description || 'বিবরণ শীঘ্রই যোগ হবে।'));
+    c.append(el('h3', '', r.name), el('p', '', r.description || 'Description coming soon.'));
     const m = el('div', 'meta');
     if (r.language) m.append(el('span', 'tag', r.language));
-    if (r.private) m.append(el('span', 'small', '🔒 কোড প্রাইভেট'));
-    if (r.updated) m.append(el('span', 'small', 'শেষ আপডেট: ' + dateBn(r.updated)));
+    if (r.private) m.append(el('span', 'small', '🔒 Private code'));
+    if (r.updated) m.append(el('span', 'small', 'Last updated: ' + fmtDate(r.updated)));
     c.append(m); rbox.append(c);
   });
 
-  /* GitHub অংশ */
+  /* GitHub section */
   const gh = document.getElementById('gh');
   const langs = [...new Set(repos.map(r => r.language).filter(Boolean))];
   const latest = repos.map(r => r.updated).filter(Boolean).sort().pop();
-  const c1 = el('div', 'card'); c1.append(el('h3', '', 'মোট রিপোজিটরি'), el('div', 'big', bn(repos.length)));
+  const c1 = el('div', 'card'); c1.append(el('h3', '', 'Total Repositories'), el('div', 'big', num(repos.length)));
   gh.append(c1);
   if (langs.length) {
-    const c2 = el('div', 'card'); c2.append(el('h3', '', 'ব্যবহৃত ভাষা'));
+    const c2 = el('div', 'card'); c2.append(el('h3', '', 'Languages Used'));
     const lm = el('div', 'meta'); langs.forEach(l => lm.append(el('span', 'tag', l))); c2.append(lm);
     gh.append(c2);
   }
   if (latest) {
-    const c3 = el('div', 'card'); c3.append(el('h3', '', 'সর্বশেষ কাজ'), el('p', '', dateBn(latest)));
+    const c3 = el('div', 'card'); c3.append(el('h3', '', 'Latest Work'), el('p', '', fmtDate(latest)));
     gh.append(c3);
   }
 
-  /* সোশ্যাল পেজ */
+  /* Social pages */
   const pbox = document.getElementById('pages');
   pages.forEach(pg => {
     const a = el('a', 'cl'); a.href = safeUrl(pg.url); a.target = '_blank'; a.rel = 'noopener';
     const c = el('div', 'card');
-    c.append(el('h3', '', pg.name), el('div', 'big', bn(pg.followers)), el('p', '', 'ফলোয়ার'));
+    c.append(el('h3', '', pg.name), el('div', 'big', num(pg.followers)), el('p', '', 'Followers'));
     a.append(c); pbox.append(a);
   });
 
-  /* যোগাযোগ */
+  /* Contact */
   const cbox = document.getElementById('contact-links');
   const add = (label, href, ext) => {
     const a = el('a', '', label); a.href = href;
     if (ext) { a.target = '_blank'; a.rel = 'noopener'; }
     cbox.append(a);
   };
-  if (p.email) add('✉️ ইমেইল', 'mailto:' + p.email, false);
+  if (p.email) add('✉️ Email', 'mailto:' + p.email, false);
   if (p.whatsapp) add('🟢 WhatsApp', 'https://wa.me/' + String(p.whatsapp).replace(/\D/g, ''), true);
   if (socials.telegram) add('✈️ Telegram', safeUrl(socials.telegram), true);
   if (socials.facebook) add('📘 Facebook', safeUrl(socials.facebook), true);
@@ -353,9 +353,9 @@ function render(d) {
   if (socials.youtube) add('▶️ YouTube', safeUrl(socials.youtube), true);
   if (socials.github) add('🐙 GitHub', safeUrl(socials.github), true);
 
-  if (d.updated) document.getElementById('updated').textContent = 'সর্বশেষ আপডেট: ' + dateBn(d.updated);
+  if (d.updated) document.getElementById('updated').textContent = 'Last updated: ' + fmtDate(d.updated);
 
-  /* যেগুলোতে কিছু নেই, সেগুলো লুকানো */
+  /* Hide empty sections */
   if (!repos.length) {
     hideSec('projects'); hideSec('github');
     document.getElementById('search').style.display = 'none';
@@ -368,7 +368,7 @@ function render(d) {
     document.getElementById('btn-connect').style.display = 'none';
   }
 
-  /* সার্চ */
+  /* Search */
   document.getElementById('search').addEventListener('input', e => {
     const q = e.target.value.trim().toLowerCase();
     let shown = 0;
