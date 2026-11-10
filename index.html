@@ -304,8 +304,8 @@ function render(d) {
   const rbox = document.getElementById('repos');
   repos.forEach(r => {
     const c = el('div', 'card');
-    c.dataset.text = ((r.name || '') + ' ' + (r.description || '') + ' ' + (r.language || '')).toLowerCase();
-    c.append(el('h3', '', r.name), el('p', '', r.description || 'Description coming soon.'));
+    c.dataset.text = ((r.title || '') + ' ' + (r.name || '') + ' ' + (r.description || '') + ' ' + (r.language || '')).toLowerCase();
+    c.append(el('h3', '', r.title || r.name), el('p', '', r.description || 'Description coming soon.'));
     const m = el('div', 'meta');
     if (r.featured) m.append(el('span', 'tag', '⭐ Featured'));
     if (r.language) m.append(el('span', 'tag', r.language));

@@ -60,6 +60,13 @@ except Exception:
         "facebook": {"pages": []},
     }
 
+# Display names set from the dashboard assistant (data.json -> display_names)
+names = data.get("display_names") or {}
+for x in shown:
+    t = names.get(x["name"])
+    if t:
+        x["title"] = t
+
 data.setdefault("github", {})["repos"] = shown
 data["updated"] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
