@@ -165,7 +165,12 @@
   async function api(path, body, auth) {
     const headers = { "Content-Type": "application/json" };
     if (auth) headers.Authorization = "Bearer " + token;
-    const r = await fetch(WORKER_URL + path, { method: "POST", headers, body: JSON.stringify(body) });
+    let r;
+    try {
+      r = await fetch(WORKER_URL + path, { method: "POST", headers, body: JSON.stringify(body), signal: AbortSignal.timeout(45000) });
+    } catch (e) {
+      throw new Error("Taking too long. Please try again or use a shorter command.");
+    }
     let data = {};
     try { data = await r.json(); } catch {}
     if (!r.ok) {
