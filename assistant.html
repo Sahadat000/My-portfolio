@@ -231,7 +231,9 @@
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   const mic = $("mic");
   if (!SR) {
-    mic.style.display = "none";
+    mic.addEventListener("click", () => {
+      add("sys", "Voice is not supported in this browser. Use the microphone key on your phone keyboard instead.");
+    });
   } else {
     const rec = new SR();
     rec.lang = "bn-BD";
@@ -243,10 +245,18 @@
       if (t) $("text").value = ($("text").value + " " + t).trim();
     };
     rec.onend = () => { on = false; mic.classList.remove("rec"); };
-    rec.onerror = () => { on = false; mic.classList.remove("rec"); };
+    rec.onerror = (ev) => {
+      on = false;
+      mic.classList.remove("rec");
+      const why = ev.error === "not-allowed" || ev.error === "service-not-allowed"
+        ? "Microphone is blocked. Allow microphone for this site in browser settings, or use the keyboard mic key."
+        : "Voice error: " + ev.error;
+      add("err", why);
+    };
     mic.addEventListener("click", () => {
       if (on) { rec.stop(); return; }
-      try { rec.start(); on = true; mic.classList.add("rec"); } catch {}
+      try { rec.start(); on = true; mic.classList.add("rec"); }
+      catch (e) { add("err", "Could not start voice: " + e.message); }
     });
   }
 

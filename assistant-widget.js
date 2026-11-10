@@ -41,6 +41,7 @@
       frame = document.createElement("iframe");
       frame.src = SRC;
       frame.title = "AI assistant";
+      frame.setAttribute("allow", "microphone");
       document.getElementById("sl-ai-box").appendChild(frame);
     }
     panel.classList.add("on");
