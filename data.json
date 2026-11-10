@@ -21,7 +21,7 @@
         "description": "",
         "language": "HTML",
         "private": false,
-        "featured": true,
+        "featured": false,
         "updated": "2026-11-10"
       }
     ]
