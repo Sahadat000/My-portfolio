@@ -81,6 +81,9 @@
   .msg.bot { align-self: flex-start; background: var(--card); border: 1px solid var(--line); border-bottom-left-radius: 4px; }
   .msg.sys { align-self: center; color: var(--muted); font-size: 15px; text-align: center; }
   .msg.err { align-self: center; color: var(--err); font-size: 15px; text-align: center; }
+  #chips { display: flex; gap: 8px; padding: 8px 12px 0; overflow-x: auto; background: var(--card); border-top: 1px solid var(--line); }
+  #chips button { flex: none; border: 1.5px solid var(--line); background: var(--paper); color: var(--ink); border-radius: 999px; padding: 6px 14px; font-size: 15px; cursor: pointer; }
+  #chips button:disabled { opacity: .6; }
   form#bar {
     display: flex; gap: 8px; padding: 10px 12px; border-top: 1px solid var(--line); background: var(--card);
   }
@@ -118,6 +121,11 @@
     <button id="logout" type="button">Lock</button>
   </header>
   <div id="log" aria-live="polite"></div>
+  <div id="chips">
+    <button type="button" data-cmd="repos">My repos</button>
+    <button type="button" data-cmd="status">Site status</button>
+    <button type="button" data-cmd="views">Visitors</button>
+  </div>
   <form id="bar">
     <button class="icon" id="mic" type="button" aria-label="Voice input">
       <svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
@@ -189,7 +197,7 @@
       $("pw").value = "";
       show(true);
     } catch (err) {
-      $("lockErr").textContent = err.status === 401 ? "Wrong password." : "Could not reach the server. Check WORKER_URL.";
+      $("lockErr").textContent = err.status === 401 ? "Wrong password." : err.status === 429 ? "Too many attempts. Wait a minute." : "Could not reach the server. Check WORKER_URL.";
     } finally {
       btn.disabled = false;
     }
@@ -225,6 +233,29 @@
       busy = false;
       $("send").disabled = false;
     }
+  });
+
+  // Instant buttons (no AI, no waiting)
+  document.querySelectorAll("#chips button").forEach((b) => {
+    b.addEventListener("click", async () => {
+      if (busy) return;
+      busy = true;
+      document.querySelectorAll("#chips button").forEach((x) => (x.disabled = true));
+      add("me", b.textContent);
+      const wait = add("sys", "Loading\u2026");
+      try {
+        const { reply } = await api("/quick", { cmd: b.dataset.cmd }, true);
+        wait.remove();
+        add("bot", reply);
+      } catch (err) {
+        wait.remove();
+        if (err.status === 401) lockUp("Session expired. Enter the password again.");
+        else add("err", "Error: " + err.message);
+      } finally {
+        busy = false;
+        document.querySelectorAll("#chips button").forEach((x) => (x.disabled = false));
+      }
+    });
   });
 
   // Voice input (Bengali, Bangladesh)

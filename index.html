@@ -307,6 +307,7 @@ function render(d) {
     c.dataset.text = ((r.name || '') + ' ' + (r.description || '') + ' ' + (r.language || '')).toLowerCase();
     c.append(el('h3', '', r.name), el('p', '', r.description || 'Description coming soon.'));
     const m = el('div', 'meta');
+    if (r.featured) m.append(el('span', 'tag', '⭐ Featured'));
     if (r.language) m.append(el('span', 'tag', r.language));
     if (r.private) m.append(el('span', 'small', '🔒 Private code'));
     if (r.updated) m.append(el('span', 'small', 'Last updated: ' + fmtDate(r.updated)));

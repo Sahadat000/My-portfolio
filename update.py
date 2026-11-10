@@ -43,8 +43,12 @@ for r in repos:
         # Private repos expose only name + description (no code details)
         "language": "" if is_private else (r.get("language") or ""),
         "private": is_private,
+        "featured": "featured" in (r.get("topics") or []),
         "updated": "" if is_private else (r.get("pushed_at") or "")[:10],
     })
+
+# Featured projects first (sort is stable, so the rest keep their order)
+shown.sort(key=lambda x: not x["featured"])
 
 try:
     with open("data.json", encoding="utf-8") as f:
