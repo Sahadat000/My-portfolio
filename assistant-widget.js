@@ -6,7 +6,7 @@
   var css = document.createElement("style");
   css.textContent =
     "#sl-ai-btn{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));width:56px;height:56px;border-radius:50%;border:0;background:#e09f3e;color:#14213d;box-shadow:0 4px 14px rgba(0,0,0,.3);cursor:pointer;z-index:99998;display:grid;place-items:center;padding:0}" +
-    "#sl-ai-btn svg{width:28px;height:28px;fill:currentColor}" +
+    "#sl-ai-btn svg{width:30px;height:30px}" +
     "#sl-ai-btn:focus-visible,#sl-ai-close:focus-visible{outline:3px solid #14213d;outline-offset:2px}" +
     "#sl-ai-panel{position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.45);display:none}" +
     "#sl-ai-panel.on{display:block}" +
@@ -21,7 +21,11 @@
   btn.type = "button";
   btn.setAttribute("aria-label", "Open AI assistant");
   btn.innerHTML =
-    '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.2 6.3L20.5 10l-6.3 1.7L12 18l-2.2-6.3L3.5 10l6.3-1.7L12 2zM19 15l1 2.6 2.6 1-2.6 1-1 2.6-1-2.6-2.6-1 2.6-1 1-2.6z"/></svg>';
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+    '<path d="M12 6V3.5"/><circle cx="12" cy="2.8" r="1" fill="currentColor"/>' +
+    '<rect x="4" y="6" width="16" height="12" rx="3.5"/>' +
+    '<circle cx="9" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1.4" fill="currentColor" stroke="none"/>' +
+    '<path d="M9.5 15.3h5"/><path d="M2 10.5v3M22 10.5v3"/><path d="M8.5 18v2.5M15.5 18v2.5"/></svg>';
 
   var panel = document.createElement("div");
   panel.id = "sl-ai-panel";
