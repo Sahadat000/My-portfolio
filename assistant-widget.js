@@ -6,7 +6,7 @@
   var css = document.createElement("style");
   css.textContent =
     "#sl-ai-btn{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));width:56px;height:56px;border-radius:50%;border:0;background:#e09f3e;color:#14213d;box-shadow:0 4px 14px rgba(0,0,0,.3);cursor:pointer;z-index:99998;display:grid;place-items:center;padding:0}" +
-    "#sl-ai-btn svg{width:30px;height:30px}" +
+    "#sl-ai-btn svg{width:34px;height:34px}" +
     "#sl-ai-btn:focus-visible,#sl-ai-close:focus-visible{outline:3px solid #14213d;outline-offset:2px}" +
     "#sl-ai-panel{position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.45);display:none}" +
     "#sl-ai-panel.on{display:block}" +
@@ -21,11 +21,13 @@
   btn.type = "button";
   btn.setAttribute("aria-label", "Open AI assistant");
   btn.innerHTML =
-    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-    '<path d="M12 6V3.5"/><circle cx="12" cy="2.8" r="1" fill="currentColor"/>' +
-    '<rect x="4" y="6" width="16" height="12" rx="3.5"/>' +
-    '<circle cx="9" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1.4" fill="currentColor" stroke="none"/>' +
-    '<path d="M9.5 15.3h5"/><path d="M2 10.5v3M22 10.5v3"/><path d="M8.5 18v2.5M15.5 18v2.5"/></svg>';
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+    '<path d="M12 4V2.6"/><circle cx="12" cy="2" r="0.9" fill="currentColor" stroke="none"/>' +
+    '<rect x="5" y="4" width="14" height="9" rx="3"/>' +
+    '<circle cx="9.3" cy="8.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="14.7" cy="8.5" r="1.2" fill="currentColor" stroke="none"/>' +
+    '<path d="M3 7v3M21 7v3"/><path d="M12 13v2"/>' +
+    '<path d="M4.5 22v-2a4.5 4.5 0 0 1 4.5-4.5h6a4.5 4.5 0 0 1 4.5 4.5v2"/>' +
+    '<circle cx="12" cy="19" r="1" fill="currentColor" stroke="none"/></svg>';
 
   var panel = document.createElement("div");
   panel.id = "sl-ai-panel";
