@@ -15,7 +15,16 @@
     }
   },
   "github": {
-    "repos": []
+    "repos": [
+      {
+        "name": "repairxpert",
+        "description": "",
+        "language": "HTML",
+        "private": false,
+        "featured": true,
+        "updated": "2026-11-10"
+      }
+    ]
   },
   "facebook": {
     "pages": []
