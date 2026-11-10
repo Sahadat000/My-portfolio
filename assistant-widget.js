@@ -74,7 +74,20 @@
     .then(function (r) { return r.json(); })
     .then(function (d) {
       var p = (d && d.profile) || {};
-      if (p.assistant_icon && ICONS[p.assistant_icon]) btn.innerHTML = ICONS[p.assistant_icon];
+      var svg = p.assistant_icon_svg;
+      if (
+        p.assistant_icon === "custom" && typeof svg === "string" && svg.indexOf("<svg") === 0 &&
+        !/<script|<foreignObject|<image|<style|\son[a-z]+\s*=|javascript:|href\s*=/i.test(svg)
+      ) {
+        btn.innerHTML = svg;
+      } else if (p.assistant_icon && ICONS[p.assistant_icon]) {
+        btn.innerHTML = ICONS[p.assistant_icon];
+      }
+      var svg = p.assistant_icon_svg;
+      if (typeof svg === "string" && /^<svg[\s>]/.test(svg) && svg.length < 8000 &&
+          !/<script|\son\w+\s*=|href|<foreignObject|<image/i.test(svg)) {
+        btn.innerHTML = svg;
+      }
       var c = p.assistant_color;
       if (c && /^#[0-9a-fA-F]{6}$/.test(c)) {
         var n = parseInt(c.slice(1), 16);
