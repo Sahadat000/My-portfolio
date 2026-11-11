@@ -276,7 +276,8 @@ function render(d) {
 
   if (p.tagline) document.getElementById('tagline').textContent = p.tagline;
   document.getElementById('about-text').textContent = p.about || '';
-  if (p.photo) { photo.style.display = ''; photo.src = p.photo; }
+  if (p.photo_v) { photo.style.display = ''; photo.src = 'profile.jpg?v=' + encodeURIComponent(p.photo_v); }
+  else if (p.photo) { photo.style.display = ''; photo.src = p.photo; }
 
   /* Top icons */
   const socials = Object.assign({}, p.socials || {});

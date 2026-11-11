@@ -127,6 +127,10 @@
     <button type="button" data-cmd="views">Visitors</button>
   </div>
   <form id="bar">
+    <button class="icon" id="attach" type="button" aria-label="Upload a photo">
+      <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 8"/></svg>
+    </button>
+    <input id="file" type="file" accept="image/*" hidden>
     <button class="icon" id="mic" type="button" aria-label="Voice input">
       <svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
     </button>
@@ -261,6 +265,47 @@
     } finally {
       busy = false;
       $("send").disabled = false;
+    }
+  });
+
+  // Photo upload: resized to a square JPEG here, then saved as the site profile photo
+  $("attach").addEventListener("click", () => { if (!busy) $("file").click(); });
+  $("file").addEventListener("change", async (ev) => {
+    const f = ev.target.files && ev.target.files[0];
+    ev.target.value = "";
+    if (!f || busy) return;
+    busy = true;
+    const wait = add("sys", "Preparing photo\u2026");
+    try {
+      const bmp = await createImageBitmap(f);
+      const side = Math.min(bmp.width, bmp.height);
+      const size = Math.min(800, side);
+      const cv = document.createElement("canvas");
+      cv.width = size; cv.height = size;
+      cv.getContext("2d").drawImage(bmp, (bmp.width - side) / 2, (bmp.height - side) / 2, side, side, 0, 0, size, size);
+      const url = cv.toDataURL("image/jpeg", 0.88);
+      wait.remove();
+      const box = add("me", "");
+      const im = document.createElement("img");
+      im.src = url; im.alt = "Selected photo";
+      im.style.cssText = "width:140px;height:140px;border-radius:50%;object-fit:cover;display:block";
+      box.appendChild(im);
+      if (!confirm("Replace the profile photo on the site with this one?")) { add("sys", "Cancelled."); busy = false; return; }
+      const w2 = add("sys", "Uploading\u2026");
+      try {
+        const { reply } = await api("/upload", { image: url.split(",")[1] }, true);
+        w2.remove();
+        add("bot", reply);
+      } catch (err) {
+        w2.remove();
+        if (err.status === 401) lockUp("Session expired. Enter the password again.");
+        else add("err", "Error: " + err.message);
+      }
+    } catch (e) {
+      wait.remove();
+      add("err", "Could not read this photo. Try a JPEG or PNG.");
+    } finally {
+      busy = false;
     }
   });
 
