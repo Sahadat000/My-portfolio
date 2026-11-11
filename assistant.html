@@ -144,6 +144,9 @@
   let token = sessionStorage.getItem("sl_token") || "";
   let history = [];
   let busy = false;
+  let provider = "auto";
+  try { provider = localStorage.getItem("sl_provider") || "auto"; } catch (e) {}
+  const PROVIDERS = { groq: "Groq", gemini: "Gemini", auto: "Auto" };
 
   function show(isApp) {
     lock.classList.toggle("on", !isApp);
@@ -215,6 +218,25 @@
     const input = $("text");
     const text = input.value.trim();
     if (!text || busy) return;
+    const sw = text.match(/^(?:use|switch to)\s+(groq|grok|gemini|auto)\s*$/i);
+    if (sw) {
+      let p = sw[1].toLowerCase();
+      if (p === "grok") p = "groq";
+      provider = p;
+      try { localStorage.setItem("sl_provider", p); } catch (e) {}
+      input.value = "";
+      add("me", text);
+      add("sys", p === "auto"
+        ? "AI: Auto. Groq first, Gemini as backup."
+        : "AI set to " + PROVIDERS[p] + ". If its limit ends, the other one takes over automatically.");
+      return;
+    }
+    if (/^(which ai|current ai)\??$/i.test(text)) {
+      input.value = "";
+      add("me", text);
+      add("sys", "Current AI: " + PROVIDERS[provider] + ". Say: use groq, use gemini, or use auto.");
+      return;
+    }
     busy = true;
     $("send").disabled = true;
     input.value = "";
@@ -222,9 +244,10 @@
     history.push({ role: "user", content: text });
     const wait = add("sys", "Working…");
     try {
-      const { reply } = await api("/chat", { messages: history }, true);
+      const { reply, provider: used, switched } = await api("/chat", { messages: history, provider }, true);
       wait.remove();
       add("bot", reply || "(no reply)");
+      if (used) add("sys", "via " + used + (switched ? " (switched automatically)" : ""));
       history.push({ role: "assistant", content: reply || "" });
     } catch (err) {
       wait.remove();
