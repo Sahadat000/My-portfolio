@@ -244,10 +244,11 @@
     history.push({ role: "user", content: text });
     const wait = add("sys", "Working…");
     try {
-      const { reply, provider: used, switched } = await api("/chat", { messages: history, provider }, true);
+      const { reply, provider: used, switched, notes } = await api("/chat", { messages: history, provider }, true);
       wait.remove();
       add("bot", reply || "(no reply)");
       if (used) add("sys", "via " + used + (switched ? " (switched automatically)" : ""));
+      if (switched && notes && notes.length) add("sys", notes.join("\n"));
       history.push({ role: "assistant", content: reply || "" });
     } catch (err) {
       wait.remove();
