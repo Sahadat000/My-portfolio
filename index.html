@@ -342,14 +342,19 @@ function render(d) {
 
   /* Contact */
   const cbox = document.getElementById('contact-links');
-  const add = (label, href, ext) => {
+  const add = (label, href, ext, icon) => {
     const a = el('a', '', label); a.href = href;
+    if (icon) {
+      const im = el('img'); im.src = 'https://cdn.simpleicons.org/' + icon + '/ffffff'; im.alt = '';
+      im.style.cssText = 'width:18px;height:18px;vertical-align:-3px;margin-right:8px';
+      a.prepend(im);
+    }
     if (ext) { a.target = '_blank'; a.rel = 'noopener'; }
     cbox.append(a);
   };
   if (p.email) add('✉️ Email', 'mailto:' + p.email, false);
   if (p.whatsapp) add('🟢 WhatsApp', 'https://wa.me/' + String(p.whatsapp).replace(/\D/g, ''), true);
-  if (socials.telegram) add('✈️ Telegram', safeUrl(socials.telegram), true);
+  if (socials.telegram) add('Telegram', safeUrl(socials.telegram), true, 'telegram');
   if (socials.facebook) add('📘 Facebook', safeUrl(socials.facebook), true);
   if (socials.discord) add('💬 Discord', safeUrl(socials.discord), true);
   if (socials.youtube) add('▶️ YouTube', safeUrl(socials.youtube), true);
